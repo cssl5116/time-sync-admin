@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import useUserStore from '@/stores/user/user'
-import { mapPathTobreadCrumb } from '@/utils/map'
+import { mapPathTobreadCrumb } from '@/utils/map-menu'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 const route = useRoute()

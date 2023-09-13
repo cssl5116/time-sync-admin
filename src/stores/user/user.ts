@@ -1,120 +1,97 @@
+import router from '@/router'
 import { defineStore } from 'pinia'
-import type { Account, BillInfo, LineInfo, PieInfo, UserData } from '@/vite-env'
+import type { UserData,Account, Menus, Phone } from '@/vite-env'
 import {
-  fetchCardInfo,
-  fetchCheckPwd,
   fetchLogin,
-  fetchProviderList,
-  fetchUpdatePwd
+  fetchPhoneCode,
+  fetchPhoneLogin,
+  getUserMenusByRole
 } from '@/service/api'
 import { localCache } from '@/utils/cache'
-import router from '@/router'
+import { mapMenusToPermissions, mapMenusToRoutes } from '@/utils/map-menu'
 import { ElMessage } from 'element-plus'
-import { mapProviderList } from '@/utils/map'
 
 const useUserStore = defineStore('user', {
   state: () => ({
     user: <UserData>{},
-    menus: [
-      {
-        text: '系统总览',
-        url: '/show',
-        icon: 'Reading',
-        submenu: [
-          {
-            text: '系统纵览',
-            url: '/show',
-            icon: 'DataAnalysis'
-          }
-        ]
-      },
-      {
-        text: '经营管理',
-        url: '/main/manage',
-        icon: 'Guide',
-        submenu: [
-          {
-            text: '订单管理',
-            url: '/manage/order',
-            icon: 'List'
-          },
-          {
-            text: '供应商管理',
-            url: '/manage/provider',
-            icon: 'Avatar'
-          }
-        ]
-      },
-      {
-        text: '系统管理',
-        url: '/system',
-        icon: 'Setting',
-        submenu: [
-          {
-            text: '用户管理',
-            url: '/system/user',
-            icon: 'User'
-          },
-          {
-            text: '密码修改',
-            url: '/system/pwd',
-            icon: 'Lock'
-          },
-          {
-            text: '退出系统',
-            url: '/system/out',
-            icon: 'SwitchButton'
-          }
-        ]
-      }
-    ],
-    cardList: <BillInfo[]>[],
-    pieInfo: <PieInfo[]>[],
-    lineInfo: <LineInfo>{},
-    providerList: <{ label: string; value: number }[]>[]
+    token: '',
+    permission: [],
+    menus: <Menus[]>[]
   }),
   actions: {
     async login(userModel: Account) {
       const userLoginResult = await fetchLogin(userModel)
-      if (userLoginResult.code === '200') {
-        this.user = userLoginResult.data
+      if (userLoginResult.code === 200) {
+        this.user = userLoginResult.user
+        this.token = userLoginResult.token
+        this.permission = userLoginResult.permission
         // 保存用户信息到本地
-        localCache.setCache('user', this.user)
+        localCache.setCache('token', this.token)
         router.push('/main')
       } else {
         ElMessage.error(userLoginResult.msg)
         return
       }
-      const providerResult = await fetchProviderList()
-      this.providerList = mapProviderList(providerResult.data)
-      localCache.setCache('provider', this.providerList)
+    },
+    async phoneLogin(userModel: Phone) {
+      const userLoginResult = await fetchPhoneLogin(userModel)
+      if (userLoginResult.code === 200) {
+        this.user = userLoginResult.user
+        this.token = userLoginResult.token
+        this.permission = userLoginResult.permission
+        // 保存用户信息到本地
+        localCache.setCache('user', this.user)
+        localCache.setCache('token', this.token)
+        localCache.setCache('permission', this.permission)
+        // 查询权限菜单
+        this.fetchUserMenus()
+        // 跳转到主页
+        router.push('/main')
+      } else {
+        ElMessage.error(userLoginResult as any)
+        return
+      }
+    },
+    async fetchPhoneCode(phone: string) {
+      const result = await fetchPhoneCode(phone)
+      if (result.code === 200) {
+        ElMessage.success('验证码已发送')
+      } else {
+        ElMessage.error(result as any)
+        return
+      }
+    },
+    async fetchUserMenus() {
+      const result = await getUserMenusByRole()
+      if (result.code === 200) {
+        this.menus = result.list
+        localCache.setCache('menus', this.menus)
+        // 动态添加路由
+        const routes = mapMenusToRoutes(this.menus)
+        routes.forEach((route) => {
+          console.log(route)
+          return router.addRoute('main', route)
+        })
+      } else {
+        ElMessage.error(result as any)
+        return
+      }
     },
     // 防止页面刷新数据丢失
     async loadLocalCache() {
       const user = localCache.getCache('user')
-      const provider = localCache.getCache('provider')
-      if (user) this.user = user
-      if (provider) this.providerList = provider
-    },
-    async checkPwd(pwd: string) {
-      const chekcResult = await fetchCheckPwd(this.user.id, pwd)
-      return chekcResult.code === '200'
-    },
-    async updateUserPwd(pwdModel: any) {
-      const updateResult = await fetchUpdatePwd(this.user.id, pwdModel)
-      if (updateResult.code === '200') {
-        ElMessage.success('修改成功')
-        router.push('/login')
-      } else {
-        ElMessage.error(updateResult.msg)
+      const token = localCache.getCache('token')
+      const menus = localCache.getCache('menus')
+      const permission = localCache.getCache('permission')
+      if (user && token && permission && menus) {
+        this.user = user
+        this.token = token
+        this.permission = permission
+        this.menus = menus
+        // 动态添加路由
+        const routes = mapMenusToRoutes(menus)
+        routes.forEach((route) => router.addRoute('main', route))
       }
-    },
-    async getCradListAction() {
-      const cradResult = await fetchCardInfo()
-      const { billInfo, pieInfo, lineInfo } = cradResult.data
-      this.cardList = billInfo
-      this.pieInfo = pieInfo
-      this.lineInfo = lineInfo
     }
   }
 })

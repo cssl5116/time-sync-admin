@@ -1,3 +1,4 @@
+import { firstMenu } from '@/utils/map-menu'
 import { createRouter, createWebHashHistory } from 'vue-router'
 const router = createRouter({
   history: createWebHashHistory(),
@@ -9,34 +10,7 @@ const router = createRouter({
     {
       path: '/main',
       name: 'main',
-      component: () => import('@/layout/index.vue'),
-      children: [
-        {
-          path: '/show',
-          name: 'show',
-          component: () => import('@/views/system/dashboard/Dashboard.vue')
-        },
-        {
-          path: '/manage/order',
-          name: 'order',
-          component: () => import('@/views/manage/order/OrderPage.vue')
-        },
-        {
-          path: '/manage/provider',
-          name: 'provider',
-          component: () => import('@/views/manage/provider/ProviderPage.vue')
-        },
-        {
-          path: '/system/user',
-          name: 'user',
-          component: () => import('@/views/system/user/UserPage.vue')
-        },
-        {
-          path: '/system/pwd',
-          name: 'pwd',
-          component: () => import('@/views/system/user/UserUpdatePwd.vue')
-        }
-      ]
+      component: () => import('@/layout/index.vue')
     },
     {
       path: '/login',
@@ -52,16 +26,12 @@ const router = createRouter({
 })
 
 router.beforeEach((to) => {
-  const user = localStorage.getItem('user')
-  if (to.path.startsWith('/system/out')) {
-    localStorage.removeItem('user')
-    return '/login'
-  }
-  if (!to.path.startsWith('/login') && !user) {
+  const token = localStorage.getItem('token')
+  if (to.path.startsWith('/main') && !token) {
     return '/login'
   }
   if (to.path === '/main') {
-    return '/manage/order' //firstMenu?.url
+    return firstMenu?.url
   }
 })
 

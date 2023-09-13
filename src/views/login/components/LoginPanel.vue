@@ -5,24 +5,36 @@ import AccountPanel from './AccountPanel.vue'
 import PhonePanel from './PhonePanel.vue'
 import { ElMessage } from 'element-plus';
 
-const activeName = ref('account')
+const activeName = ref('phone')
 
 // 获取组件实例 (先typeof推断组件类型, 再InstanceType获取返回类型)
 const accountRef = ref<InstanceType<typeof AccountPanel>>()
+const phoneRef = ref<InstanceType<typeof PhonePanel>>()
 const handleLoginEvent = () => {
   if (activeName.value === 'account') {
-    accountRef.value?.loginAction()
+    ElMessage.error('暂不支持账户登录')
   } else {
-    ElMessage.error('暂不支持手机登录')
+    phoneRef.value?.loginAction()
   }
 }
 </script>
 
 <template>
   <div class="login-panel">
-    <h2 class="title">超市订单管理系统</h2>
+    <h2 class="title">时刻在线协同办公管理系统</h2>
     <div class="tabs">
       <el-tabs type="border-card" stretch v-model="activeName">
+        <el-tab-pane name="phone">
+          <template #label>
+            <div class="label flex-center">
+              <el-icon>
+                <Iphone />
+              </el-icon>
+              <span class="text">手机登录</span>
+            </div>
+          </template>
+          <PhonePanel ref="phoneRef"/>
+        </el-tab-pane>
         <el-tab-pane name="account">
           <template #label>
             <div class="label flex-center">
@@ -33,17 +45,6 @@ const handleLoginEvent = () => {
             </div>
           </template>
           <AccountPanel ref="accountRef" />
-        </el-tab-pane>
-        <el-tab-pane name="phone">
-          <template #label>
-            <div class="label flex-center">
-              <el-icon>
-                <Iphone />
-              </el-icon>
-              <span class="text">手机登录</span>
-            </div>
-          </template>
-          <PhonePanel />
         </el-tab-pane>
       </el-tabs>
     </div>

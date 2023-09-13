@@ -1,9 +1,11 @@
 import type {
   Account,
+  Phone,
   DashboardResult,
   PageInfo,
   ProviderResult,
-  UserLoginResult
+  UserLoginResult,
+  BaseResult
 } from '@/vite-env'
 import { http } from '.'
 
@@ -11,8 +13,28 @@ export function fetchLogin(userModel: Account) {
   return http.post<UserLoginResult>({ url: '/user/login', data: userModel })
 }
 
-export function fetchProviderList() {
-  return http.get<ProviderResult>({ url: '/provider/info' })
+export function fetchPhoneLogin(userModel: Phone) {
+  return http.post<UserLoginResult>({
+    url: '/user/loginH',
+    data: userModel,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+    }
+  })
+}
+
+export function fetchPhoneCode(phone: string) {
+  return http.post<BaseResult>({
+    url: '/user/check',
+    data: { phone: phone },
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+    }
+  })
+}
+
+export function getUserMenusByRole() {
+  return http.post({ url: '/menu/list' })
 }
 
 export function fetchPageListData(pageName: string, pageInfo: PageInfo) {

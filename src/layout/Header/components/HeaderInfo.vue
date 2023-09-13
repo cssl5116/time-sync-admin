@@ -2,6 +2,7 @@
 import router from '@/router'
 import { localCache } from '@/utils/cache'
 import { ElMessage } from 'element-plus'
+import { IMG_URL } from '@/service/config'
 import { QuestionFilled } from '@element-plus/icons-vue'
 import useUserStore from '@/stores/user/user'
 
@@ -31,8 +32,8 @@ const userStore = useUserStore()
     <div class="info">
       <el-dropdown>
         <span class="user-info flex-level-center">
-          <el-avatar :size="30" src="src/assets/img/avatar.jpg" />
-          <span class="name">{{ userStore.user.userName }}</span>
+          <el-avatar :size="30" :src="IMG_URL + userStore.user.photo" />
+          <span class="name">{{ userStore.user.nickname }}</span>
         </span>
         <template #dropdown>
           <el-dropdown-menu>

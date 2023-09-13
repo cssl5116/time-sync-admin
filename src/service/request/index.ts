@@ -28,7 +28,7 @@ class Request {
       },
       (err) => {
         // TODO: remove Loading...
-        return err
+        return err?.response?.data || err
       }
     )
   }

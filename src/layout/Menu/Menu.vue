@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { mapPathToMenus } from '@/utils/map'
+import { mapPathToMenus } from '@/utils/map-menu'
 import { Menus } from '@/vite-env'
 import useUserStore from '@/stores/user/user'
 defineProps<{ isFold: boolean }>()
@@ -28,7 +28,7 @@ const defaultActive = computed(() => {
   <div class="aside">
     <div class="logo">
       <img src="@/assets/img/logo.png" alt="" />
-      <div class="text">超市订单管理系统</div>
+      <div class="text">协同办公管理系统</div>
     </div>
     <div class="menu">
       <el-menu
@@ -37,15 +37,15 @@ const defaultActive = computed(() => {
         :collapse="isFold"
       >
         <template v-for="item in menu" :key="item.id">
-          <template v-if="Object.keys(item).includes('submenu')">
+          <template v-if="Object.keys(item).includes('children')">
             <el-sub-menu :index="item.url">
               <template #title>
                 <el-icon>
                   <component :is="item?.icon" />
                 </el-icon>
-                <span>{{ item.text }}</span>
+                <span>{{ item.name }}</span>
               </template>
-              <template v-for="subitem in item.submenu" :key="subitem.id">
+              <template v-for="subitem in item.children" :key="subitem.id">
                 <el-menu-item
                   :index="subitem.url"
                   @click="handleMenuItemClick(subitem)"
@@ -54,7 +54,7 @@ const defaultActive = computed(() => {
                     <el-icon>
                       <component :is="subitem?.icon" />
                     </el-icon>
-                    <span>{{ subitem.text }}</span>
+                    <span>{{ subitem.name }}</span>
                   </template>
                 </el-menu-item>
               </template>
@@ -66,7 +66,7 @@ const defaultActive = computed(() => {
                 <el-icon>
                   <component :is="item?.icon" />
                 </el-icon>
-                <span>{{ item.text }}</span>
+                <span>{{ item.name }}</span>
               </template>
             </el-menu-item>
           </template>

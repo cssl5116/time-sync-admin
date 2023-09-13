@@ -7,7 +7,7 @@ import type { Menus, ProviderListData } from '@/vite-env'
  */
 export const mapPathToMenus = (path: string, menus: Menus[]) => {
   for (const menu of menus) {
-    if (!menu.submenu) continue
+    if (!menu.children) continue
 
     for (const submenu of menu.submenu) {
       if (submenu.url === path) return submenu

@@ -1,38 +1,72 @@
 /// <reference types="vite/client" />
-declare module 'element-plus/dist/locale/zh-cn.mjs';
+declare module 'element-plus/dist/locale/zh-cn.mjs'
+
+
+
+export interface Children {
+	id: number;
+	icon: string;
+	name: string;
+	url: string;
+	permissionId?: any;
+	type: number;
+	parent: number;
+	createAt: string;
+	updateAt?: any;
+	permissionName?: any;
+	children?: any;
+}
 
 export interface Menus {
-  text: string
-  url: string
-  icon: string
-  submenu?: Menus[]
+	id: number;
+	icon: string;
+	name: string;
+	url: string;
+	permissionId?: any;
+	type: number;
+	parent?: any;
+	createAt: string;
+	updateAt?: any;
+	permissionName?: any;
+	children?: Children[];
 }
+
+
 export interface Account {
   name: string
   password: string
 }
 
-export interface UserData {
-  id: string
-  userCode: string
-  userName: string
-  userPassword: string
-  gender: number
-  birthday: string
-  phone: string
-  address: string
-  userRole: number
-  createdBy: number
-  creationDate: string
-  modifyBy?: any
-  modifyDate?: any
-}
-export interface BaseResult {
+export interface Phone {
   code: string
+  phone: string
+}
+
+export interface UserData {
+	id: number;
+	openId: string;
+	nickname?: string;
+	photo: string;
+	name?: any;
+	sex?: any;
+	tel: string;
+	email?: any;
+	hiredate?: any;
+	role: string;
+	root: number;
+	deptId?: any;
+	status: number;
+	createTime: string;
+}
+
+export interface BaseResult {
+  code: number
   msg: string
 }
 export interface UserLoginResult extends BaseResult {
-  data: UserData
+  user: any
+  token: string
+  permission: []
 }
 
 export interface ProviderListData {
@@ -59,28 +93,28 @@ export interface PageInfo {
 }
 
 export interface PieInfo {
-	name: string;
-	value: number;
+  name: string
+  value: number
 }
 
 export interface BillInfo {
-	tip: string;
-	title: string;
-	number: number;
-	subtitle: string;
+  tip: string
+  title: string
+  number: number
+  subtitle: string
 }
 
 export interface LineInfo {
-	yAxis: number[];
-	xAxis: string[];
+  yAxis: number[]
+  xAxis: string[]
 }
 
 export interface DashboardInfo {
-	pieInfo: PieInfo[];
-	billInfo: BillInfo[];
-	lineInfo: LineInfo;
+  pieInfo: PieInfo[]
+  billInfo: BillInfo[]
+  lineInfo: LineInfo
 }
 
-export interface DashboardResult extends BaseResult{
+export interface DashboardResult extends BaseResult {
   data: DashboardInfo
 }
