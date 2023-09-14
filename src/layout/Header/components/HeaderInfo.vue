@@ -7,7 +7,7 @@ import { QuestionFilled } from '@element-plus/icons-vue'
 import useUserStore from '@/stores/user/user'
 
 const handleExitClick = () => {
-  localCache.removeCache('user')
+  localCache.clear()
   ElMessage({ message: '退出成功!', type: 'success' })
   router.push('/login')
 }

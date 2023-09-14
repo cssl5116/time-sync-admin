@@ -1,36 +1,33 @@
 /// <reference types="vite/client" />
 declare module 'element-plus/dist/locale/zh-cn.mjs'
 
-
-
 export interface Children {
-	id: number;
-	icon: string;
-	name: string;
-	url: string;
-	permissionId?: any;
-	type: number;
-	parent: number;
-	createAt: string;
-	updateAt?: any;
-	permissionName?: any;
-	children?: any;
+  id: number
+  icon: string
+  name: string
+  url: string
+  permissionId?: any
+  type: number
+  parent: number
+  createAt: string
+  updateAt?: any
+  permissionName?: any
+  children?: any
 }
 
 export interface Menus {
-	id: number;
-	icon: string;
-	name: string;
-	url: string;
-	permissionId?: any;
-	type: number;
-	parent?: any;
-	createAt: string;
-	updateAt?: any;
-	permissionName?: any;
-	children?: Children[];
+  id: number
+  icon: string
+  name: string
+  url: string
+  permissionId?: any
+  type: number
+  parent?: any
+  createAt: string
+  updateAt?: any
+  permissionName?: any
+  children?: Children[]
 }
-
 
 export interface Account {
   name: string
@@ -43,20 +40,20 @@ export interface Phone {
 }
 
 export interface UserData {
-	id: number;
-	openId: string;
-	nickname?: string;
-	photo: string;
-	name?: any;
-	sex?: any;
-	tel: string;
-	email?: any;
-	hiredate?: any;
-	role: string;
-	root: number;
-	deptId?: any;
-	status: number;
-	createTime: string;
+  id: number
+  openId: string
+  nickname?: string
+  photo: string
+  name?: any
+  sex?: any
+  tel: string
+  email?: any
+  hiredate?: any
+  role: string
+  root: number
+  deptId?: any
+  status: number
+  createTime: string
 }
 
 export interface BaseResult {
@@ -66,7 +63,7 @@ export interface BaseResult {
 export interface UserLoginResult extends BaseResult {
   user: any
   token: string
-  permission: []
+  permission: string[]
 }
 
 export interface ProviderListData {

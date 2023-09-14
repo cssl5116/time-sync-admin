@@ -18,8 +18,8 @@ const usePageStore = defineStore('page', {
   actions: {
     async getPageListAction(pageName: string, pageInfo: PageInfo) {
       const pageListDataResult = await fetchPageListData(pageName, pageInfo)
-      const { records, total } = pageListDataResult.data
-      this.pageList = records
+      const { list, total } = pageListDataResult.data
+      this.pageList = list
       this.totalCount = total
     },
     async editPageDateAction(pageName: string, pageInfo: any) {

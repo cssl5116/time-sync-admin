@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BASE_URL } from '@/service/config'
+// import { BASE_URL } from '@/service/config'
 import usePageStore from '@/stores/page/page'
 import { formateTime } from '@/utils/formate-day'
 import { storeToRefs } from 'pinia'
@@ -58,13 +58,6 @@ defineExpose({ getPageDataList })
             {{ contentConfig.header.btnText ?? '新增数据' }}
           </el-button>
         </template>
-        <el-link
-          :href="BASE_URL + '/' + pageName + '/down'"
-          target="_blank"
-          type="primary"
-          style="margin-left: 10px;"
-          >导出excel文件</el-link
-        >
       </div>
     </div>
     <div class="table">

@@ -25,8 +25,8 @@ const handelQueryClick = () => emit('query', searchForm)
 
 <template>
   <div class="page-search">
-    <el-form :model="searchForm" ref="formRef" label-width="100px" size="large">
-      <el-row :gutter="20">
+    <el-form :model="searchForm" ref="formRef" label-width="80px" size="large">
+      <el-row :gutter="10">
         <template v-for="item in searchConfig.formItems" :key="item.prop">
           <el-col :span="8">
             <el-form-item :label="item.label" :prop="item.prop">
@@ -40,6 +40,7 @@ const handelQueryClick = () => emit('query', searchForm)
                 <el-date-picker
                   v-model="searchForm[item.prop]"
                   type="daterange"
+                  value-format="YYYY-MM-DD"
                   range-separator="—"
                   start-placeholder="开始日期"
                   end-placeholder="结束日期"

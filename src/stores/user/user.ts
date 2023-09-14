@@ -1,6 +1,6 @@
 import router from '@/router'
 import { defineStore } from 'pinia'
-import type { UserData,Account, Menus, Phone } from '@/vite-env'
+import type { UserData, Account, Menus, Phone } from '@/vite-env'
 import {
   fetchLogin,
   fetchPhoneCode,
@@ -8,14 +8,14 @@ import {
   getUserMenusByRole
 } from '@/service/api'
 import { localCache } from '@/utils/cache'
-import { mapMenusToPermissions, mapMenusToRoutes } from '@/utils/map-menu'
+import { mapMenusToRoutes } from '@/utils/map-menu'
 import { ElMessage } from 'element-plus'
 
 const useUserStore = defineStore('user', {
   state: () => ({
     user: <UserData>{},
     token: '',
-    permission: [],
+    permission: <string[]>[],
     menus: <Menus[]>[]
   }),
   actions: {
@@ -57,7 +57,7 @@ const useUserStore = defineStore('user', {
       if (result.code === 200) {
         ElMessage.success('验证码已发送')
       } else {
-        ElMessage.error(result as any)
+        ElMessage.error(result.msg)
         return
       }
     },
@@ -65,13 +65,11 @@ const useUserStore = defineStore('user', {
       const result = await getUserMenusByRole()
       if (result.code === 200) {
         this.menus = result.list
+        console.log(this.menus);
         localCache.setCache('menus', this.menus)
         // 动态添加路由
         const routes = mapMenusToRoutes(this.menus)
-        routes.forEach((route) => {
-          console.log(route)
-          return router.addRoute('main', route)
-        })
+        routes.forEach((route) => router.addRoute('main', route))
       } else {
         ElMessage.error(result as any)
         return

@@ -3,7 +3,6 @@ import type {
   Phone,
   DashboardResult,
   PageInfo,
-  ProviderResult,
   UserLoginResult,
   BaseResult
 } from '@/vite-env'

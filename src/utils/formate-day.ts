@@ -7,6 +7,7 @@ export function formateTime(
   time: Date | string,
   formate = 'YYYY-MM-DD'
 ) {
+  if (!time) return ''
   return dayjs.utc(time).format(formate)
 }
 

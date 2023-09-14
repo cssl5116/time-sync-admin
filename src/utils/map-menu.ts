@@ -1,15 +1,11 @@
 import type { Children, Menus } from '@/vite-env'
 import type { RouteRecordRaw } from 'vue-router'
-import routerList from '@/router/routerList.ts';
-
+import routerList from '@/router/routerList.ts'
 
 export let firstMenu = <Children>{}
 export const mapMenusToRoutes = (menus: Menus[]) => {
   // 获取所有路由列表
   const allRoutes = routerList
-  console.log(allRoutes)
-  console.log(menus);
-  
 
   // 2.根据菜单去匹配正确的路由
   const routes: RouteRecordRaw[] = []
@@ -33,7 +29,6 @@ export const mapMenusToRoutes = (menus: Menus[]) => {
       }
     }
   }
-  console.log(routes)
   return routes
 }
 
