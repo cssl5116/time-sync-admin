@@ -2,10 +2,12 @@ import router from '@/router'
 import { defineStore } from 'pinia'
 import type { UserData, Account, Menus, Phone } from '@/vite-env'
 import {
+  fetchDeptList,
   fetchAllUser,
   fetchLogin,
   fetchPhoneCode,
   fetchPhoneLogin,
+  fetchRoleList,
   getUserMenusByRole
 } from '@/service/api'
 import { localCache } from '@/utils/cache'
@@ -16,8 +18,10 @@ const useUserStore = defineStore('user', {
   state: () => ({
     user: <UserData>{},
     token: '',
-    permission: <string[]>[],
+    permission: <any[]>[],
     menus: <Menus[]>[],
+    roleList: <any[]>[],
+    deptList: <any[]>[],
     users: <UserData[]>[]
   }),
   actions: {
@@ -92,6 +96,14 @@ const useUserStore = defineStore('user', {
         const routes = mapMenusToRoutes(menus)
         routes.forEach((route) => router.addRoute('main', route))
       }
+    },
+    async fetchRoleList() {
+      const res = await fetchRoleList()
+      this.roleList = res.list
+    },
+    async fetchDeptList() {
+      const res = await fetchDeptList()
+      this.deptList = res.list
     },
     async fetchAllUser() {
       const res = await fetchAllUser()

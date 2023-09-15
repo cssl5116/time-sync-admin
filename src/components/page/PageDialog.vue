@@ -21,7 +21,7 @@ const initialForm: any = {}
 for (const item of props.dialogConfig.formItems) {
   initialForm[item.prop] = item.initialValue ?? ''
 }
-const formDate = reactive<any>(initialForm)
+let formDate = reactive<any>(initialForm)
 
 const isNewRef = ref(true)
 const editData = ref()
@@ -35,6 +35,7 @@ const setDialogVisible = (isnew = true, info?: any) => {
     for (const key in formDate) {
       formDate[key] = info[key]
     }
+    if (props.otherInfo) formDate = { ...formDate, ...props.otherInfo }
     editData.value = info
   } else {
     // 清空表单数据
@@ -76,40 +77,21 @@ defineExpose({ setDialogVisible })
 
 <template>
   <div class="page-dialog">
-    <el-dialog
-      v-model="dialogVisible"
-      :title="
-        isNewRef ? dialogConfig.header.newTitle : dialogConfig.header.editTitle
-      "
-      width="35%"
-      center
-    >
+    <el-dialog v-model="dialogVisible" :title="isNewRef ? dialogConfig.header.newTitle : dialogConfig.header.editTitle
+      " width="35%" center>
       <div class="form">
         <el-form :model="formDate" label-width="100px">
           <template v-for="item in dialogConfig.formItems" :key="item.prop">
             <el-form-item :label="item.label" :prop="item.prop">
               <template v-if="item.type === 'input'">
-                <el-input
-                  v-model="formDate[item.prop]"
-                  :placeholder="item.placeholder"
-                />
+                <el-input v-model="formDate[item.prop]" :placeholder="item.placeholder" />
               </template>
               <template v-if="item.type === 'date-pricker'">
-                <el-date-picker
-                  v-model="formDate[item.prop]"
-                  type="daterange"
-                  range-separator="—"
-                  start-placeholder="开始日期"
-                  end-placeholder="结束日期"
-                  size="large"
-                />
+                <el-date-picker v-model="formDate[item.prop]" type="daterange" range-separator="—"
+                  start-placeholder="开始日期" end-placeholder="结束日期" size="large" />
               </template>
               <template v-if="item.type === 'select'">
-                <el-select
-                  v-model="formDate[item.prop]"
-                  :placeholder="item.placeholder"
-                  style="width: 100%"
-                >
+                <el-select v-model="formDate[item.prop]" :placeholder="item.placeholder" style="width: 100%">
                   <template v-for="option in item.options" :key="option.value">
                     <el-option :label="option.label" :value="option.value" />
                   </template>
@@ -119,13 +101,8 @@ defineExpose({ setDialogVisible })
                 <slot :name="item.slotName"></slot>
               </template>
               <template v-if="item.type === 'time-pricker'">
-                <el-date-picker
-                  v-model="formDate[item.prop]"
-                  type="date"
-                  placeholder="选择日期"
-                  format="YYYY/MM/DD"
-                  style="width: 100%"
-                />
+                <el-date-picker v-model="formDate[item.prop]" type="date" placeholder="选择日期" format="YYYY/MM/DD"
+                  style="width: 100%" />
               </template>
             </el-form-item>
           </template>

@@ -58,16 +58,11 @@ defineExpose({ getPageDataList })
             {{ contentConfig.header.btnText ?? '新增数据' }}
           </el-button>
         </template>
+
       </div>
     </div>
     <div class="table">
-      <el-table
-        :data="pageList"
-        border
-        stripe
-        style="width: 100%"
-        v-bind="contentConfig.childrenTree"
-      >
+      <el-table :data="pageList" border stripe style="width: 100%" v-bind="contentConfig.childrenTree">
         <template v-for="item in contentConfig.propsList" :key="item.label">
           <template v-if="item.type == 'timer'">
             <el-table-column align="center" v-bind="item">
@@ -80,26 +75,13 @@ defineExpose({ getPageDataList })
             <el-table-column align="center" label="操作">
               <template #default="scope">
                 <div class="option flex-center">
-                  <el-button
-                    text
-                    icon="Edit"
-                    type="primary"
-                    @click="handleUpdateEvent(scope.row)"
-                  >
+                  <el-button text icon="Edit" type="primary" @click="handleUpdateEvent(scope.row)">
                     编辑
                   </el-button>
                   <span style="color: #999">|</span>
-                  <el-popconfirm
-                    width="220"
-                    confirm-button-text="删除"
-                    confirm-button-type="danger"
-                    cancel-button-text="取消"
-                    cancel-button-type="primary"
-                    icon="QuestionFilled"
-                    icon-color="#626AEF"
-                    title="确认是否删除?"
-                    @confirm="handleDeleteEvent(scope.row.id)"
-                  >
+                  <el-popconfirm width="220" confirm-button-text="删除" confirm-button-type="danger" cancel-button-text="取消"
+                    cancel-button-type="primary" icon="QuestionFilled" icon-color="#626AEF" title="确认是否删除?"
+                    @confirm="handleDeleteEvent(scope.row.id)">
                     <template #reference>
                       <el-button text icon="Delete" type="danger">
                         删除
@@ -118,25 +100,15 @@ defineExpose({ getPageDataList })
             </el-table-column>
           </template>
           <template v-else>
-            <el-table-column
-              show-overflow-tooltip
-              align="center"
-              v-bind="item"
-            />
+            <el-table-column show-overflow-tooltip align="center" v-bind="item" />
           </template>
         </template>
       </el-table>
     </div>
     <div class="pagination" v-if="contentConfig.isPagination ?? true">
-      <el-pagination
-        v-model:current-page="currentPage"
-        v-model:page-size="pageSize"
-        :page-sizes="[2, 5, 10]"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="totalCount"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-      />
+      <el-pagination v-model:current-page="currentPage" v-model:page-size="pageSize" :page-sizes="[2, 5, 10]"
+        layout="total, sizes, prev, pager, next, jumper" :total="totalCount" @size-change="handleSizeChange"
+        @current-change="handleCurrentChange" />
     </div>
   </div>
 </template>

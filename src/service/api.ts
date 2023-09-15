@@ -21,6 +21,17 @@ export function fetchPhoneLogin(userModel: Phone) {
   })
 }
 
+export function fetchRoleList() {
+  return http.get({
+    url: '/role/roleList',
+  })
+}
+
+export function fetchDeptList() {
+  return http.get({
+    url: '/dept/deptList',
+  })
+}
 export function fetchPhoneCode(phone: string) {
   return http.post<BaseResult>({
     url: '/user/check',
