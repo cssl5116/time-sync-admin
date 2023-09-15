@@ -85,7 +85,7 @@ export interface ProviderResult extends BaseResult {
   data: ProviderListData[]
 }
 export interface PageInfo {
-  page: number
+  offset: number
   size: number
 }
 
