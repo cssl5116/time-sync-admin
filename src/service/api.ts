@@ -1,7 +1,6 @@
 import type {
   Account,
   Phone,
-  DashboardResult,
   PageInfo,
   UserLoginResult,
   BaseResult
@@ -62,15 +61,6 @@ export function fetchDeletePageInfo(pageName: string, id: number) {
   return http.delete({ url: `/${pageName}/delete/${id}` })
 }
 
-// 验证密码
-export function fetchCheckPwd(userId: string, pwd: string) {
-  return http.post({ url: `/user/check`, data: { pwd: pwd, userId: userId } })
-}
-
-export function fetchUpdatePwd(userId: string, pwdModel: any) {
-  return http.post({ url: `/user/updatePwd/${userId}`, data: pwdModel })
-}
-
-export function fetchCardInfo() {
-  return http.get<DashboardResult>({ url: '/bill/other' })
+export function fetchAllUser() {
+  return http.get({ url: '/user/all' })
 }

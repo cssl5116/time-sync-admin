@@ -2,6 +2,7 @@ import router from '@/router'
 import { defineStore } from 'pinia'
 import type { UserData, Account, Menus, Phone } from '@/vite-env'
 import {
+  fetchAllUser,
   fetchLogin,
   fetchPhoneCode,
   fetchPhoneLogin,
@@ -16,7 +17,8 @@ const useUserStore = defineStore('user', {
     user: <UserData>{},
     token: '',
     permission: <string[]>[],
-    menus: <Menus[]>[]
+    menus: <Menus[]>[],
+    users: <UserData[]>[]
   }),
   actions: {
     async login(userModel: Account) {
@@ -65,7 +67,7 @@ const useUserStore = defineStore('user', {
       const result = await getUserMenusByRole()
       if (result.code === 200) {
         this.menus = result.list
-        console.log(this.menus);
+        console.log(this.menus)
         localCache.setCache('menus', this.menus)
         // 动态添加路由
         const routes = mapMenusToRoutes(this.menus)
@@ -90,6 +92,10 @@ const useUserStore = defineStore('user', {
         const routes = mapMenusToRoutes(menus)
         routes.forEach((route) => router.addRoute('main', route))
       }
+    },
+    async fetchAllUser() {
+      const res = await fetchAllUser()
+      this.users = res.data
     }
   }
 })
