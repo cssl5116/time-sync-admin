@@ -5,6 +5,7 @@ export default function usePageContent() {
   const contentRef = ref<InstanceType<typeof PageContent>>()
   
   const handleQueryEvent = (queryInfo: any) => {
+    console.log(queryInfo)
     contentRef.value?.getPageDataList(queryInfo)
   }
 
